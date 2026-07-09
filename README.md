@@ -33,7 +33,7 @@ Use the skill folder path in the `skills` array for local shell environments, or
 
 ### Databricks Genie
 
-If Genie supports your workspace's instruction or knowledge attachment flow, attach or paste `skills/databricks-data-engineering-best-practices/SKILL.md` and keep the Databricks credit from `SOURCE_CREDIT.md`.
+Genie Agents do not install Agent Skills packages with `npx skills add`. Configure the skill as Genie Agent instructions instead. See [Databricks Genie setup](docs/databricks-genie.md).
 
 ## Validate
 
@@ -56,6 +56,7 @@ The hook formats Go, runs vet, runs race/shuffle tests, and validates the skill.
 - `skills/databricks-data-engineering-best-practices/SKILL.md`: installable skill
 - `SOURCE_CREDIT.md`: attribution and source notes
 - `DISCOVERY.md`: naming, keywords, and discoverability
+- `docs/databricks-genie.md`: Genie Agent setup guidance
 - `tests/skill-evaluation.md`: skill TDD scenarios and checks
 - `cmd/validate-skill`: local validation CLI
 - `internal/skillvalidator`: typed Go validation package and tests

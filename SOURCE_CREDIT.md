@@ -3,6 +3,10 @@
 Primary source:
 
 - Databricks, "Developer best practices on Databricks": https://docs.databricks.com/aws/en/developers/best-practices
+- Databricks, "Genie Agents": https://docs.databricks.com/aws/en/genie/
+- Databricks, "Create and manage a Genie Agent": https://docs.databricks.com/aws/en/genie/set-up
+- Databricks, "Tune Genie Agent quality": https://docs.databricks.com/aws/en/genie/tune-quality
+- Databricks, "Use the Genie Agents API": https://docs.databricks.com/aws/en/genie/conversation-api
 
 Current source status:
 
