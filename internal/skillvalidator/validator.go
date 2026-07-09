@@ -20,6 +20,7 @@ var requiredTerms = []string{
 	"OIDC",
 	"Lakeflow Spark Declarative Pipelines",
 	"Databricks",
+	"community-informed",
 }
 
 var (

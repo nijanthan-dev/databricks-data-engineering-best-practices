@@ -1,8 +1,8 @@
 # Databricks Data Engineering Best Practices Skill
 
-Installable Agent Skill for Databricks data engineering work: repo layout, bundles, CI/CD, workspace isolation, testing, observability, and production hygiene.
+Installable Agent Skill for Databricks data engineering work: repository boundaries, Terraform and bundle ownership, governed data isolation, delivery gates, testing, observability, and agent-verifiable production hygiene.
 
-Source credit: this skill is derived from and credits Databricks documentation, especially [Developer best practices on Databricks](https://docs.databricks.com/aws/en/developers/best-practices). The skill paraphrases that guidance and adds agent-facing workflow structure.
+Source credit: this skill derives from and credits Databricks documentation, especially [Developer best practices on Databricks](https://docs.databricks.com/aws/en/developers/best-practices). It paraphrases that guidance and clearly labels community-informed operating alternatives.
 
 ## Install
 
