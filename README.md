@@ -31,8 +31,17 @@ If the agent supports Agent Skills, install the folder as-is. If it only support
 ## Validate
 
 ```bash
-python3 scripts/validate_skill.py
+go test ./...
+go run ./cmd/validate-skill
 ```
+
+## Pre-commit
+
+```bash
+git config core.hooksPath .githooks
+```
+
+The hook formats Go, runs tests, and validates the skill.
 
 ## Files
 
@@ -40,7 +49,8 @@ python3 scripts/validate_skill.py
 - `SOURCE_CREDIT.md`: attribution and source notes
 - `DISCOVERY.md`: naming, keywords, and discoverability
 - `tests/skill-evaluation.md`: skill TDD scenarios and checks
-- `scripts/validate_skill.py`: local validation
+- `cmd/validate-skill`: local validation CLI
+- `internal/skillvalidator`: typed Go validation package and tests
 
 ## License
 

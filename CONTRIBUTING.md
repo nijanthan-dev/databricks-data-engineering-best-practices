@@ -13,7 +13,8 @@ Keep this skill focused on Databricks data engineering delivery practices: repo 
 - Run validation before opening a PR.
 
 ```bash
-python3 scripts/validate_skill.py
+go test ./...
+go run ./cmd/validate-skill
 ```
 
 ## PR checklist
