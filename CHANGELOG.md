@@ -6,5 +6,5 @@
 - Added Databricks source credit.
 - Added validation and skill evaluation notes.
 - Replaced Python validator with typed Go validator and tests.
-- Added pre-commit hook and GitHub Actions validation.
-- Strengthened Go validation with vet, race/shuffle tests, formatting, and module tidy checks.
+- Added local pre-commit validation.
+- Strengthened local Go validation with vet and race/shuffle tests.
