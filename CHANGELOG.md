@@ -8,3 +8,4 @@
 - Replaced Python validator with typed Go validator and tests.
 - Added local pre-commit validation.
 - Strengthened local Go validation with vet and race/shuffle tests.
+- Replaced manual install docs with tested `npx skills add` commands.

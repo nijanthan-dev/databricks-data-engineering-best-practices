@@ -6,27 +6,34 @@ Source credit: this skill is derived from and credits Databricks documentation, 
 
 ## Install
 
-### Codex / VS Code agent skills
+### Codex + Claude Code
 
 ```bash
-mkdir -p .agents/skills
-cp -R skills/databricks-data-engineering-best-practices .agents/skills/
+npx skills add nijanthan-dev/databricks-data-engineering-best-practices --global --agent codex claude-code --skill databricks-data-engineering-best-practices --copy -y
 ```
 
-### Claude Code
+This was tested locally. It installs:
+
+- Codex: `~/.agents/skills/databricks-data-engineering-best-practices`
+- Claude Code: `~/.claude/skills/databricks-data-engineering-best-practices`
+
+### Other Agents
+
+Use the same command with the agent name your tool supports:
 
 ```bash
-mkdir -p ~/.claude/skills
-cp -R skills/databricks-data-engineering-best-practices ~/.claude/skills/
+npx skills add nijanthan-dev/databricks-data-engineering-best-practices --global --agent <agent-name> --skill databricks-data-engineering-best-practices --copy -y
 ```
+
+To target every supported agent, use `--agent '*'`. Prefer scoped agent names for a quieter install.
 
 ### OpenAI Responses API
 
-Use the skill folder path in the `skills` array for local shell environments, or zip the folder for hosted/inline skill use.
+Use the skill folder path in the `skills` array for local shell environments, or zip `skills/databricks-data-engineering-best-practices`.
 
-### Databricks Genie and other agents
+### Databricks Genie
 
-If the agent supports Agent Skills, install the folder as-is. If it only supports custom instructions or saved agents, attach or paste `SKILL.md` as the instruction source and keep the `SOURCE_CREDIT.md` link.
+If Genie supports your workspace's instruction or knowledge attachment flow, attach or paste `skills/databricks-data-engineering-best-practices/SKILL.md` and keep the Databricks credit from `SOURCE_CREDIT.md`.
 
 ## Validate
 
