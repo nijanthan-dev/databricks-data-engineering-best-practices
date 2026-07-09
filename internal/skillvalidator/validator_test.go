@@ -36,6 +36,23 @@ func TestValidateSkillReportsMissingRequiredTerm(t *testing.T) {
 	assertIssue(t, result.Issues, "missing terms: Unity Catalog")
 }
 
+func TestValidateSkillReportsMissingCommunityLabel(t *testing.T) {
+	root := copyRepoFixture(t)
+	skillPath := filepath.Join(root, "skills", SkillName, "SKILL.md")
+	contents := readFile(t, skillPath)
+	contents = strings.ReplaceAll(contents, "community-informed", "operational")
+	writeFile(t, skillPath, contents)
+
+	result, err := Validate(root)
+	if err != nil {
+		t.Fatalf("Validate returned error: %v", err)
+	}
+	if result.Valid {
+		t.Fatal("expected invalid result")
+	}
+	assertIssue(t, result.Issues, "missing terms: community-informed")
+}
+
 func TestValidateSkillReportsFolderNameMismatch(t *testing.T) {
 	root := copyRepoFixture(t)
 	oldDir := filepath.Join(root, "skills", SkillName)

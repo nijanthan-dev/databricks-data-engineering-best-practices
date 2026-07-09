@@ -7,6 +7,7 @@
 - Added governed PII access, inter-bundle contracts, environment overrides, and gated deployment guidance.
 - Added agent-friendly repository guidance and focused evaluation scenarios.
 - Incorporated community feedback through original, source-credit-safe wording.
+- Distinguished official Databricks defaults from community-informed operating alternatives.
 
 ## 0.1.0 - 2026-07-09
 

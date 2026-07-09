@@ -7,6 +7,7 @@ Keep this skill focused on Databricks data engineering delivery practices: repo 
 ## Rules
 
 - Credit Databricks for source-derived guidance.
+- Label community-informed alternatives; do not attribute them to Databricks.
 - Paraphrase. Do not copy Databricks docs wholesale.
 - Check the official source before changing recommendations.
 - Keep `SKILL.md` concise and agent-oriented.

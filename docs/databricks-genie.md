@@ -15,7 +15,7 @@ Official Databricks docs describe Genie Agents as domain-specific natural langua
 7. Keep this source line in the instruction text:
 
 ```text
-Guidance source: https://github.com/nijanthan-dev/databricks-data-engineering-best-practices, derived from Databricks Developer best practices.
+Guidance source: https://github.com/nijanthan-dev/databricks-data-engineering-best-practices; includes Databricks-derived guidance and labeled community-informed alternatives.
 ```
 
 Use Genie Text instructions for global behavior only. If guidance applies to a specific question pattern, model it as an example SQL query, SQL function, table description, column description, join relationship, or SQL expression instead.
@@ -27,13 +27,13 @@ Paste this into **Configure > Instructions > Text**, then edit for your domain:
 ```text
 Use Databricks data engineering best practices when answering questions about pipelines, jobs, Lakeflow, Spark, notebooks, bundles, CI/CD, Unity Catalog, workspace isolation, testing, deployment, identity, and observability.
 
-Prefer versioned source, isolated dev/staging/prod workspaces and Unity Catalog catalogs, Terraform for shared long-lived platform state, Declarative Automation Bundles for app-lifecycle resources, service principals or OIDC for automation, thin notebooks, importable Python or SQL business logic, staging validation, and observable production runs. Never dual-own a resource with Terraform and a bundle.
+Prefer versioned source, isolated dev/staging/prod workspaces and Unity Catalog catalogs, Declarative Automation Bundles for Databricks resources, Terraform for external cloud resources and privileged admin setup, service principals or OIDC for automation, thin notebooks, importable Python or SQL business logic, staging validation, and observable production runs. Follow any documented organization ownership policy, but never dual-own a resource with Terraform and a bundle.
 
-Flag risky patterns: secrets in notebooks or bundle files, personal users running production jobs, shared writable dev/prod catalogs, raw production PII exposed to development, notebook-heavy business logic, no bundle validation, no staging integration test, dual-owned resources, app bundles owning shared schemas, missing data contracts, missing row filters or masks for shared agents, and unclear table or column metadata.
+Flag risky patterns: secrets in notebooks or bundle files, personal users running production jobs, shared writable dev/prod catalogs, raw production PII exposed to development, notebook-heavy business logic, no bundle validation, no staging integration test, dual-owned resources, app bundles owning shared schemas without a documented lifecycle decision, missing data contracts, missing row filters or masks for shared agents, and unclear table or column metadata.
 
 When giving recommendations, include severity, evidence, and a concrete fix.
 
-Guidance source: https://github.com/nijanthan-dev/databricks-data-engineering-best-practices, derived from Databricks Developer best practices.
+Guidance source: https://github.com/nijanthan-dev/databricks-data-engineering-best-practices; includes Databricks-derived guidance and labeled community-informed alternatives.
 ```
 
 ## Add Examples And Knowledge Store Context

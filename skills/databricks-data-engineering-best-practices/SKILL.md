@@ -7,7 +7,7 @@ metadata:
   source_url: "https://docs.databricks.com/aws/en/developers/best-practices"
   source_name: "Databricks Developer best practices on Databricks"
   source_last_updated: "2026-06-11"
-  source_checked: "2026-07-09"
+  source_checked: "2026-07-10"
   version: "0.1.0"
 ---
 
@@ -15,7 +15,7 @@ metadata:
 
 Use this when an agent is helping with a Databricks data engineering repository, deployment design, CI/CD review, or production-readiness audit.
 
-This skill is a paraphrased, agent-oriented guide based on Databricks documentation. Credit Databricks when reusing the guidance. Do not treat this as a replacement for the official docs.
+This skill paraphrases Databricks documentation and adds original, community-informed operating heuristics. Community-informed alternatives are labeled; do not attribute them to Databricks. Credit Databricks when reusing source-derived guidance, and do not treat this skill as a replacement for the official docs.
 
 ## Core Principle
 
@@ -25,9 +25,9 @@ Production Databricks work should be versioned, isolated by environment, deploye
 
 | Situation | Prefer | Avoid |
 | --- | --- | --- |
-| Repository boundary | One repo when lifecycle, risk, cadence, and ownership align | Monorepo by default |
+| Repository boundary | Databricks single-repo default or documented local exception | Unexplained split or monorepo |
 | Deployment unit | Small owned bundles | One giant bundle for unrelated domains |
-| Resource owner | Terraform for shared platform state; bundles for app resources | Dual ownership |
+| Resource owner | Bundles by default; one documented owner per resource | Dual ownership |
 | Developer data | Governed non-prod data and personal write schemas | Casual raw production PII access |
 | Production identity | Service principals or OIDC | Personal users or long-lived secrets |
 | Notebooks | Thin exploration/orchestration | Main home for business logic |
@@ -37,10 +37,11 @@ Production Databricks work should be versioned, isolated by environment, deploye
 
 - Version source files, SQL, notebooks, bundle config, and environment overrides.
 - Do not commit credentials, tokens, PII samples, local data, wheels, jars, or other build artifacts.
+- Start with the Databricks recommendation: one repository for source and configuration, including bundles with separate deployment lifecycles.
 - Ask what "single repo" means: organization, domain, team, product, or bundle.
-- Keep projects together only when lifecycle, risk, compliance, release cadence, and deployment ownership align.
-- Split repos when confidentiality, compliance, blast radius, cadence, or ownership differs meaningfully.
-- Consider a cookiecutter template per project or team when shared standards matter but a monorepo would increase complexity or blast radius.
+- As a community-informed alternative, an organization may document broader split criteria when lifecycle, risk, compliance, release cadence, or deployment ownership differs meaningfully.
+- Split only at that documented boundary. Confidentiality and regulated separation remain the clearest reasons to depart from the Databricks default.
+- A cookiecutter or custom bundle template per project or team can preserve standards when an organization deliberately favors simpler repos and smaller blast radius over the single-repo default.
 - Use short-lived branches and keep `main` deployable.
 - After urgent hotfixes, merge the fix back to trunk immediately.
 
@@ -57,16 +58,17 @@ Production Databricks work should be versioned, isolated by environment, deploye
 - Treat table and column comments as code. Keep definitions in SQL or bundle-managed files.
 - Prefer serverless compute where available; otherwise control egress and networking tightly.
 
-## Terraform And Bundle Ownership
+## Resource Ownership
 
-- Terraform owns shared, long-lived platform state where drift matters: storage credentials, external locations, catalogs, shared schemas, grants, warehouses, service principals, and cluster policies.
-- Declarative Automation Bundles own app or workflow resources that ship and change together: jobs, pipelines, notebooks, dashboards, alerts, and app-private resources.
+- Start with the Databricks recommendation: Terraform owns external cloud resources and privileged admin setup; Declarative Automation Bundles own other Databricks resources.
+- A community-informed platform model may instead assign shared, long-lived state to Terraform where drift matters: storage credentials, external locations, catalogs, shared schemas, grants, warehouses, service principals, and cluster policies. Adopt this only as explicit organization policy.
+- In that model, bundles own app or workflow resources that ship and change together: jobs, pipelines, notebooks, dashboards, alerts, and app-private resources.
 - Never manage the same object with both Terraform and a bundle.
 - Ask: "What happens if this bundle is destroyed?" A scary answer signals the wrong owner or missing protection.
 - Bundle-managed resources follow the bundle lifecycle.
-- Default shared schemas to Terraform because they become stable addresses for BI, jobs, permissions, lineage, users, and downstream systems.
+- Under the platform model, default shared schemas to Terraform because they become stable addresses for BI, jobs, permissions, lineage, users, and downstream systems.
 - Let a bundle own a schema only when it is app-private, low-blast-radius, safe to recreate, and shares the app lifecycle.
-- Put long-lived bundle-managed resources in a separate infrastructure or foundation bundle, not an app bundle.
+- Under the Databricks default, put long-lived shared resources in a separate infrastructure or foundation bundle, not an app bundle.
 - Treat lifecycle protection and bind or unbind workflows as safeguards, not substitutes for clear ownership.
 
 ## Bundles And Delivery
@@ -129,6 +131,7 @@ Use this before approving or generating a Databricks repo change:
 
 - [ ] Source, SQL, notebooks, and bundle config are versioned.
 - [ ] Secrets, PII samples, and build artifacts are excluded.
+- [ ] Repo structure follows the Databricks single-repo default or documents the local exception.
 - [ ] Workspace, catalog, and schema isolation match risk.
 - [ ] Production data is not reachable from dev through loose catalog binding.
 - [ ] PII access uses governed, masked, tokenized, synthetic, or controlled data paths.
@@ -148,10 +151,10 @@ Use this before approving or generating a Databricks repo change:
 
 | Mistake | Fix |
 | --- | --- |
-| "Single repo" has no defined boundary | Ask which lifecycle and ownership boundary is intended |
+| Repo split has no documented exception | Keep the Databricks default or document the local boundary |
 | Bundle contains many unrelated domains | Split by ownership, lifecycle, or rollback boundary |
 | Terraform and a bundle manage one object | Pick one owner before deployment |
-| App bundle owns a shared schema | Move it to Terraform or a foundation bundle |
+| App bundle owns a shared schema | Move it to the documented platform owner or a foundation bundle |
 | Dev and prod share writable catalogs | Mirror environments and isolate prod bindings |
 | Developers read raw production PII | Use governed masked, synthetic, or controlled validation data |
 | Notebook has core transformations | Extract module or SQL file, leave notebook thin |
@@ -182,4 +185,4 @@ Source
 
 ## Source Credit
 
-This skill paraphrases Databricks guidance from "Developer best practices on Databricks." Always credit Databricks when reusing or publishing this skill's recommendations.
+Source-derived guidance paraphrases "Developer best practices on Databricks." Community-informed alternatives are original additions. Credit Databricks for its guidance without attributing those alternatives to Databricks.

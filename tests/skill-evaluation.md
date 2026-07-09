@@ -34,8 +34,8 @@ Baseline behaviors to guard against:
 With the skill loaded, the agent should:
 
 - Name Databricks-specific surfaces: Declarative Automation Bundles, Unity Catalog, personal schemas, service principals, OIDC, dynamic task values, Lakeflow Spark Declarative Pipelines.
-- Define repo boundaries by lifecycle, risk, compliance, cadence, and ownership; allow project templates as an alternative.
-- Assign shared long-lived state to Terraform and app-lifecycle resources to bundles, with no dual ownership.
+- State the Databricks single-repo default, then ask which boundary is intended and label broader split criteria or per-project templates as community-informed alternatives.
+- State the Databricks bundle-first ownership default, label shared-state Terraform ownership as an explicit organization policy, and forbid dual ownership.
 - Keep shared schemas outside app bundles unless they are app-private and safe to recreate.
 - Require governed masked, tokenized, synthetic, filtered, subset, or service-principal-controlled paths for production PII.
 - Allow gated, scheduled, or release-triggered deployment when operational risk requires it.
@@ -63,4 +63,4 @@ Pass condition: output flags all major failures above and proposes Databricks-sp
 6. `Two independent bundles exchange tables but have no owner, schema version, or quality contract.`
 7. `This repo has examples but no tests, validation command, or ownership metadata. Can an agent safely change it?`
 
-Pass condition: each answer identifies the specific risk, asks for missing boundary or governance context where needed, and gives a concise corrective action.
+Pass condition: each answer identifies the specific risk, asks for missing boundary or governance context where needed, and gives a concise corrective action. Repo and Terraform answers distinguish Databricks defaults from community-informed alternatives.
