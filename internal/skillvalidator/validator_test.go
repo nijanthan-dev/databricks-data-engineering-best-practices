@@ -71,6 +71,23 @@ func TestValidateSkillReportsDescriptionPrefix(t *testing.T) {
 	assertIssue(t, result.Issues, "description must start with 'Use when '")
 }
 
+func TestValidateSkillReportsFrontmatterNameMismatch(t *testing.T) {
+	root := copyRepoFixture(t)
+	skillPath := filepath.Join(root, "skills", SkillName, "SKILL.md")
+	contents := readFile(t, skillPath)
+	contents = strings.Replace(contents, "name: "+SkillName, "name: wrong-name", 1)
+	writeFile(t, skillPath, contents)
+
+	result, err := Validate(root)
+	if err != nil {
+		t.Fatalf("Validate returned error: %v", err)
+	}
+	if result.Valid {
+		t.Fatal("expected invalid result")
+	}
+	assertIssue(t, result.Issues, "name must match folder")
+}
+
 func repoRoot(t *testing.T) string {
 	t.Helper()
 	wd, err := os.Getwd()

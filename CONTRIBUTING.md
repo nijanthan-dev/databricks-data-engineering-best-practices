@@ -13,7 +13,8 @@ Keep this skill focused on Databricks data engineering delivery practices: repo 
 - Run validation before opening a PR.
 
 ```bash
-go test ./...
+go vet ./...
+go test -race -shuffle=on ./...
 go run ./cmd/validate-skill
 ```
 

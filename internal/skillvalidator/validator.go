@@ -22,6 +22,11 @@ var requiredTerms = []string{
 	"Databricks",
 }
 
+var (
+	namePattern        = regexp.MustCompile(`(?m)^name:\s*([a-z0-9-]+)\s*$`)
+	descriptionPattern = regexp.MustCompile(`(?m)^description:\s*(.+)\s*$`)
+)
+
 type Result struct {
 	Valid  bool
 	Issues []string
@@ -58,7 +63,7 @@ func validateText(text string, folderName string) []string {
 	frontmatter := parts[1]
 	body := parts[2]
 
-	nameMatch := regexp.MustCompile(`(?m)^name:\s*([a-z0-9-]+)\s*$`).FindStringSubmatch(frontmatter)
+	nameMatch := namePattern.FindStringSubmatch(frontmatter)
 	if nameMatch == nil {
 		issues = append(issues, "invalid or missing name")
 	} else {
@@ -71,7 +76,7 @@ func validateText(text string, folderName string) []string {
 		}
 	}
 
-	descriptionMatch := regexp.MustCompile(`(?m)^description:\s*(.+)\s*$`).FindStringSubmatch(frontmatter)
+	descriptionMatch := descriptionPattern.FindStringSubmatch(frontmatter)
 	if descriptionMatch == nil {
 		issues = append(issues, "missing description")
 	} else {

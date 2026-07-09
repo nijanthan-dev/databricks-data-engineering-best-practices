@@ -31,7 +31,8 @@ If the agent supports Agent Skills, install the folder as-is. If it only support
 ## Validate
 
 ```bash
-go test ./...
+go vet ./...
+go test -race -shuffle=on ./...
 go run ./cmd/validate-skill
 ```
 
@@ -41,7 +42,7 @@ go run ./cmd/validate-skill
 git config core.hooksPath .githooks
 ```
 
-The hook formats Go, runs tests, and validates the skill.
+The hook formats Go, runs vet, runs race/shuffle tests, and validates the skill.
 
 ## Files
 

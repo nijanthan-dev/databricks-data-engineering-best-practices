@@ -22,8 +22,24 @@ jobs:
           go-version-file: go.mod
           cache: true
 
+      - name: Check formatting
+        run: |
+          files="$(gofmt -l cmd internal)"
+          if [ -n "$files" ]; then
+            echo "$files"
+            exit 1
+          fi
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Check module tidy
+        run: |
+          go mod tidy
+          git diff --exit-code
+
       - name: Test
-        run: go test ./...
+        run: go test -race -shuffle=on ./...
 
       - name: Validate skill
         run: go run ./cmd/validate-skill
