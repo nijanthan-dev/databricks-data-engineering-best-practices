@@ -1,7 +1,8 @@
 # Changelog
 
-## Unreleased
+## 1.0.0 - 2026-07-10
 
+- First stable release.
 - Clarified repository boundaries and project-template alternatives.
 - Defined Terraform, bundle, schema, and lifecycle ownership rules.
 - Added governed PII access, inter-bundle contracts, environment overrides, and gated deployment guidance.

@@ -8,7 +8,7 @@ metadata:
   source_name: "Databricks Developer best practices on Databricks"
   source_last_updated: "2026-06-11"
   source_checked: "2026-07-10"
-  version: "0.1.0"
+  version: "1.0.0"
 ---
 
 # Databricks Data Engineering Best Practices
