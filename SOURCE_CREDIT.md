@@ -16,4 +16,6 @@ Current source status:
 
 This repo paraphrases and reorganizes the guidance into an agent skill. It does not copy the Databricks page wholesale. Databricks owns its documentation and trademarks.
 
+Community feedback informs practical emphasis and evaluation scenarios. The skill uses original wording and does not reproduce comments or identify commenters.
+
 Databricks, Apache Spark, Spark, and related marks belong to their respective owners. See the official Databricks documentation for authoritative and current guidance.

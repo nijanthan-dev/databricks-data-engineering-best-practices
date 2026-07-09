@@ -27,9 +27,9 @@ Paste this into **Configure > Instructions > Text**, then edit for your domain:
 ```text
 Use Databricks data engineering best practices when answering questions about pipelines, jobs, Lakeflow, Spark, notebooks, bundles, CI/CD, Unity Catalog, workspace isolation, testing, deployment, identity, and observability.
 
-Prefer versioned source, isolated dev/staging/prod workspaces and Unity Catalog catalogs, Declarative Automation Bundles for Databricks jobs and pipelines, Terraform for cloud/admin resources, service principals or OIDC for automation, thin notebooks, importable Python or SQL business logic, staging validation, and observable production runs.
+Prefer versioned source, isolated dev/staging/prod workspaces and Unity Catalog catalogs, Terraform for shared long-lived platform state, Declarative Automation Bundles for app-lifecycle resources, service principals or OIDC for automation, thin notebooks, importable Python or SQL business logic, staging validation, and observable production runs. Never dual-own a resource with Terraform and a bundle.
 
-Flag risky patterns: secrets in notebooks or bundle files, personal users running production jobs, shared writable dev/prod catalogs, notebook-heavy business logic, no bundle validation, no staging integration test, Terraform managing every Databricks object, missing row filters or masks for shared agents, and unclear table or column metadata.
+Flag risky patterns: secrets in notebooks or bundle files, personal users running production jobs, shared writable dev/prod catalogs, raw production PII exposed to development, notebook-heavy business logic, no bundle validation, no staging integration test, dual-owned resources, app bundles owning shared schemas, missing data contracts, missing row filters or masks for shared agents, and unclear table or column metadata.
 
 When giving recommendations, include severity, evidence, and a concrete fix.
 

@@ -25,20 +25,22 @@ Production Databricks work should be versioned, isolated by environment, deploye
 
 | Situation | Prefer | Avoid |
 | --- | --- | --- |
-| Code and config layout | One repo for source, SQL, notebooks, and bundle config | Scattered repos without a lifecycle reason |
+| Repository boundary | One repo when lifecycle, risk, cadence, and ownership align | Monorepo by default |
 | Deployment unit | Small owned bundles | One giant bundle for unrelated domains |
-| Databricks resources | Declarative Automation Bundles | Terraform for every Databricks object |
-| External cloud/admin resources | Terraform | Ad-hoc manual setup |
-| Developer data writes | Personal schemas in non-prod catalogs | Shared dev schemas overwritten by teammates |
+| Resource owner | Terraform for shared platform state; bundles for app resources | Dual ownership |
+| Developer data | Governed non-prod data and personal write schemas | Casual raw production PII access |
 | Production identity | Service principals or OIDC | Personal users or long-lived secrets |
 | Notebooks | Thin exploration/orchestration | Main home for business logic |
-| Promotion gate | Unit tests, bundle validation, staging integration checks | Manual notebook runs only |
+| Promotion gate | Tests plus risk-appropriate release controls | Merge-to-main always deploys |
 
-## Source Control
+## Repository Boundaries
 
 - Version source files, SQL, notebooks, bundle config, and environment overrides.
 - Do not commit credentials, tokens, PII samples, local data, wheels, jars, or other build artifacts.
-- Prefer one repository when teams share code, config, and conventions. Split repos only for a real confidentiality or lifecycle boundary.
+- Ask what "single repo" means: organization, domain, team, product, or bundle.
+- Keep projects together only when lifecycle, risk, compliance, release cadence, and deployment ownership align.
+- Split repos when confidentiality, compliance, blast radius, cadence, or ownership differs meaningfully.
+- Consider a cookiecutter template per project or team when shared standards matter but a monorepo would increase complexity or blast radius.
 - Use short-lived branches and keep `main` deployable.
 - After urgent hotfixes, merge the fix back to trunk immediately.
 
@@ -49,19 +51,37 @@ Production Databricks work should be versioned, isolated by environment, deploye
 - Mirror workspaces with Unity Catalog catalogs such as dev, staging, and prod.
 - Bind production catalogs only to production workspaces.
 - Give developers personal schemas in dev and staging, for example `dev_${user_name}`.
+- If production contains PII, do not point development casually at raw production data.
+- Prefer masked or tokenized production-like subsets, synthetic sensitive fields, and governed row or column filters.
+- Use service principals for controlled validation against real inputs. Stable inputs help testing, but governance decides who can access them.
 - Treat table and column comments as code. Keep definitions in SQL or bundle-managed files.
 - Prefer serverless compute where available; otherwise control egress and networking tightly.
 
-## CI/CD And Bundles
+## Terraform And Bundle Ownership
 
-- Use Declarative Automation Bundles for Databricks jobs, pipelines, permissions, schedules, and deployment workflows.
-- Use Terraform for cloud-level resources, workspace provisioning, networking, and privileged admin setup.
+- Terraform owns shared, long-lived platform state where drift matters: storage credentials, external locations, catalogs, shared schemas, grants, warehouses, service principals, and cluster policies.
+- Declarative Automation Bundles own app or workflow resources that ship and change together: jobs, pipelines, notebooks, dashboards, alerts, and app-private resources.
+- Never manage the same object with both Terraform and a bundle.
+- Ask: "What happens if this bundle is destroyed?" A scary answer signals the wrong owner or missing protection.
+- Bundle-managed resources follow the bundle lifecycle.
+- Default shared schemas to Terraform because they become stable addresses for BI, jobs, permissions, lineage, users, and downstream systems.
+- Let a bundle own a schema only when it is app-private, low-blast-radius, safe to recreate, and shares the app lifecycle.
+- Put long-lived bundle-managed resources in a separate infrastructure or foundation bundle, not an app bundle.
+- Treat lifecycle protection and bind or unbind workflows as safeguards, not substitutes for clear ownership.
+
+## Bundles And Delivery
+
 - Keep each bundle owned by one team and tied to one lifecycle.
 - Use `sync.paths` for shared code outside a bundle root instead of copying common folders.
-- Model bundle-to-bundle dependencies in CI/CD. Do not collapse separate domains just because one depends on another.
-- Pass published artifact IDs or locations through pipeline inputs and fail fast when upstream output is missing.
+- For inter-bundle dependencies, define upstream output and data contracts: owner, version, schema compatibility, quality checks, and supported changes.
+- Validate dependency order and contracts in CI/CD. Do not collapse independent bundles only because they exchange data.
+- Pass published artifact IDs or locations through pipeline inputs; fail fast when upstream output is absent or incompatible.
 - Use templates for shared guardrails: permissions, tags, cluster policies, workspace targets, default schedules, and instance baselines.
 - Keep template parameters limited to values that should vary by team, app, or environment.
+- Define targets and variables once, then use small environment overrides for workspace paths, catalogs, service principals, schedules, and sizing. Do not copy large bundle sections across dev, staging, and prod.
+- Keep secrets out of bundle files. Use secret references and identity-based authentication.
+- Match deployment cadence to risk. Regulated or operational environments may require approvals, release batches, downtime windows, or external dependency alignment.
+- GitHub Releases or CalVer-triggered promotion is valid. Do not assume every merge to `main` must deploy to staging or production.
 
 ## Development Practices
 
@@ -90,6 +110,12 @@ Use all three gates before production:
 
 For Lakeflow Spark Declarative Pipelines, use development and validation features with representative small datasets, including malformed or edge-case records.
 
+## Agent-Friendly Repo Design
+
+- Give coding agents a predictable layout, small bundles, runnable tests, exact validation commands, representative examples, ownership metadata, and concise deployment docs.
+- Make verification local and deterministic so agents can prove changes instead of guessing.
+- For Genie, provide instructions, examples, metadata, benchmarks, and API configuration. Do not tell users to install skills into Genie with `npx`.
+
 ## Observability
 
 - Treat logs and metrics as deployment requirements.
@@ -105,25 +131,35 @@ Use this before approving or generating a Databricks repo change:
 - [ ] Secrets, PII samples, and build artifacts are excluded.
 - [ ] Workspace, catalog, and schema isolation match risk.
 - [ ] Production data is not reachable from dev through loose catalog binding.
+- [ ] PII access uses governed, masked, tokenized, synthetic, or controlled data paths.
 - [ ] Bundles are small, owned, and deployable independently.
-- [ ] Terraform is limited to cloud/admin resources.
+- [ ] Every resource has one owner; shared long-lived state is outside app bundles.
+- [ ] Inter-bundle data contracts define ownership, compatibility, and quality gates.
+- [ ] Targets use concise overrides; secrets remain external.
 - [ ] Service principals or OIDC handle automation.
 - [ ] Notebooks are not the main business-logic layer.
 - [ ] Dynamic task values pass runtime context.
-- [ ] Unit, validation, and staging integration gates exist.
+- [ ] Unit, bundle validation, and staging integration gates exist.
+- [ ] Promotion timing and approvals match operational risk.
+- [ ] Agents can run documented tests and validation locally.
 - [ ] Logging and metrics are part of deployment.
 
 ## Common Mistakes
 
 | Mistake | Fix |
 | --- | --- |
+| "Single repo" has no defined boundary | Ask which lifecycle and ownership boundary is intended |
 | Bundle contains many unrelated domains | Split by ownership, lifecycle, or rollback boundary |
+| Terraform and a bundle manage one object | Pick one owner before deployment |
+| App bundle owns a shared schema | Move it to Terraform or a foundation bundle |
 | Dev and prod share writable catalogs | Mirror environments and isolate prod bindings |
+| Developers read raw production PII | Use governed masked, synthetic, or controlled validation data |
 | Notebook has core transformations | Extract module or SQL file, leave notebook thin |
-| CI validates YAML only | Add non-prod deploy and staging job checks |
+| Every main merge deploys regulated prod | Use gated release-triggered promotion |
+| Bundles exchange data without a contract | Define version, compatibility, ownership, and quality checks |
+| Agents cannot verify changes | Document local tests, validation commands, and examples |
 | Personal user runs production jobs | Use run-as service principals |
 | Secrets appear in examples | Replace with secret references and rotate if exposed |
-| Terraform manages all Databricks assets | Use bundles for workspace resources and workflows |
 
 ## Example Agent Response Shape
 
