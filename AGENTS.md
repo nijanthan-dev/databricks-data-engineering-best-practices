@@ -33,7 +33,7 @@ These rules are self-contained. Do not depend on or assume `~/.codex/AGENTS.md` 
 ## Repository Scope
 
 - Keep guidance explicit about repository boundaries and ownership.
-- Default shared, long-lived resources and schemas to Terraform.
+- Start from Databricks' bundle-first recommendation for most Databricks resources. Describe Terraform ownership of shared, long-lived resources and schemas as an explicit organization/platform policy, not a universal default.
 - Never let Terraform and Databricks Asset Bundles own the same object.
 - Treat bundle-destroy behavior as a required design review question.
 - Keep changes verifiable by agents through documented local commands and focused checks.
