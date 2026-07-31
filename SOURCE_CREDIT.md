@@ -10,8 +10,8 @@ Primary source:
 
 Current source status:
 
-- Page last updated by Databricks: 2026-06-11
-- Checked for this repo: 2026-07-10
+- Page last updated by Databricks: 2026-07-10
+- Checked for this repo: 2026-08-01
 - Cloud variant checked: AWS
 
 Source-derived sections paraphrase and reorganize Databricks guidance into an agent skill. They do not copy the Databricks page wholesale. Databricks owns its documentation and trademarks.

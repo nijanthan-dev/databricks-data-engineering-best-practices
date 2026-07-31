@@ -25,6 +25,7 @@ Baseline behaviors to guard against:
 - No environment isolation checks.
 - No source credit.
 - No production testing or observability gate.
+- No explicit staging shape, production catalog isolation mode, or rollback path.
 - Vague repo or resource ownership.
 - Unsafe data access or release automation.
 - No contract or agent-verification checks.
@@ -42,6 +43,7 @@ With the skill loaded, the agent should:
 - Require versioned inter-bundle schema or data contracts with owners, compatibility, and quality checks.
 - Flag notebook-heavy business logic and recommend `src/` modules or `.sql` files.
 - Require unit, bundle validation, and staging integration gates.
+- Distinguish PR unit gates, non-prod bundle deployment, staging checks, and targeted bundle rollback.
 - Require documented local tests and validation commands that coding agents can run.
 - Credit Databricks when publishing guidance.
 
