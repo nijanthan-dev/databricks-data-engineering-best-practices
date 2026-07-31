@@ -6,9 +6,9 @@ compatibility: Works as an Agent Skill for Codex, Claude Code, VS Code-compatibl
 metadata:
   source_url: "https://docs.databricks.com/aws/en/developers/best-practices"
   source_name: "Databricks Developer best practices on Databricks"
-  source_last_updated: "2026-06-11"
-  source_checked: "2026-07-10"
-  version: "1.0.0"
+  source_last_updated: "2026-07-10"
+  source_checked: "2026-08-01"
+  version: "1.1.0"
 ---
 
 # Databricks Data Engineering Best Practices
@@ -48,15 +48,18 @@ Production Databricks work should be versioned, isolated by environment, deploye
 ## Workspace And Data Isolation
 
 - Use separate workspaces for development and production; add staging as teams or risk grow.
+- For small teams, two workspaces (development and production) can be a starting point; for growing teams, use development, staging, and production.
+- Keep staging functionally representative of production, including bundle configuration, schema, and critical integrations, even when scaled down.
 - For regulated work, prefer physical cloud/account separation when confidentiality demands it.
 - Mirror workspaces with Unity Catalog catalogs such as dev, staging, and prod.
-- Bind production catalogs only to production workspaces.
+- Bind the production catalog in `ISOLATED` mode to the production workspace only.
+- Reserve separate metastores, cloud accounts, or regions for regulatory, data-sovereignty, or multi-region requirements that catalog isolation cannot satisfy.
 - Give developers personal schemas in dev and staging, for example `dev_${user_name}`.
 - If production contains PII, do not point development casually at raw production data.
 - Prefer masked or tokenized production-like subsets, synthetic sensitive fields, and governed row or column filters.
 - Use service principals for controlled validation against real inputs. Stable inputs help testing, but governance decides who can access them.
 - Treat table and column comments as code. Keep definitions in SQL or bundle-managed files.
-- Prefer serverless compute where available; otherwise control egress and networking tightly.
+- Prefer serverless compute where available; for production, pair it with network policies where supported; otherwise control egress and networking tightly.
 
 ## Resource Ownership
 
@@ -73,6 +76,7 @@ Production Databricks work should be versioned, isolated by environment, deploye
 
 ## Bundles And Delivery
 
+- Use Declarative Automation Bundles (formerly Databricks Asset Bundles) as the default CI/CD unit for Databricks resources.
 - Keep each bundle owned by one team and tied to one lifecycle.
 - Use `sync.paths` for shared code outside a bundle root instead of copying common folders.
 - For inter-bundle dependencies, define upstream output and data contracts: owner, version, schema compatibility, quality checks, and supported changes.
@@ -84,10 +88,12 @@ Production Databricks work should be versioned, isolated by environment, deploye
 - Keep secrets out of bundle files. Use secret references and identity-based authentication.
 - Match deployment cadence to risk. Regulated or operational environments may require approvals, release batches, downtime windows, or external dependency alignment.
 - GitHub Releases or CalVer-triggered promotion is valid. Do not assume every merge to `main` must deploy to staging or production.
+- Keep bundles small enough for targeted rollback. During incidents, revert the affected bundle, use a narrowly scoped hotfix only when needed, then merge the hotfix back to `main` after validation.
 
 ## Development Practices
 
 - Use the Databricks workspace UI, Git folders, or a local IDE with the Databricks extension.
+- The official Databricks VS Code extension provides Databricks-specific agent skills, Unity Catalog and file-system access, and remote development on Databricks compute.
 - Move Python business logic into importable modules under `src/` or `src/py/`.
 - Move SQL business logic into `.sql` files under `src/` or `src/sql/`.
 - Keep notebooks thin: exploration, visualization, or orchestration only.
@@ -106,11 +112,11 @@ Production Databricks work should be versioned, isolated by environment, deploye
 
 Use all three gates before production:
 
-1. Unit tests: cover importable business logic with `pytest` or equivalent.
-2. Bundle validation: run `databricks bundle validate`; deploy to non-prod in CI when possible.
-3. Staging integration: run end-to-end jobs with completion checks and data quality assertions.
+1. Unit tests: cover importable business logic with `pytest` or equivalent on every pull request; failures block merges.
+2. Bundle validation: run `databricks bundle validate`; prefer a non-production `bundle deploy` in CI to catch resource-mapping issues.
+3. Staging integration: run end-to-end jobs after staging deployment with completion checks and data-quality assertions; promote only after main and staging checks pass.
 
-For Lakeflow Spark Declarative Pipelines, use development and validation features with representative small datasets, including malformed or edge-case records.
+For Lakeflow Spark Declarative Pipelines, use built-in development and validation features with representative small datasets, including malformed or edge-case records, instead of ad-hoc notebook runs.
 
 ## Agent-Friendly Repo Design
 

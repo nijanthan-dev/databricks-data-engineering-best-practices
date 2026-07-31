@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0 - 2026-08-01
+
+- Refreshed source metadata and expanded workspace isolation, bundle lifecycle, developer tooling, and testing guidance from the Databricks page updated 2026-07-10.
+
 ## 1.0.0 - 2026-07-10
 
 - First stable release.
