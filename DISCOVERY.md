@@ -1,6 +1,10 @@
 # Discovery
 
-## Chosen name
+## Display name
+
+Databricks Developer Best Practices
+
+## Technical skill ID
 
 `databricks-data-engineering-best-practices`
 
@@ -10,11 +14,11 @@ Why:
 - Includes `data-engineering`, matching the target user.
 - Includes `best-practices`, matching the official page and likely search terms.
 - Lowercase hyphenated skill name, valid under the Agent Skills specification.
-- Exact-name web search found no visible collisions on 2026-07-09.
+- The technical ID remains stable for compatible Agent Skills installation.
 
 ## Repo name
 
-Use `databricks-data-engineering-best-practices`.
+Use the display name “Databricks Developer Best Practices”; install with technical ID `databricks-data-engineering-best-practices`.
 
 ## Search triggers
 

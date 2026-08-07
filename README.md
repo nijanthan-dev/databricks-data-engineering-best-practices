@@ -1,4 +1,6 @@
-# Databricks Data Engineering Best Practices Skill
+# Databricks Developer Best Practices
+
+Technical skill ID: `databricks-data-engineering-best-practices`.
 
 Installable Agent Skill for Databricks data engineering work: repository boundaries, Terraform and bundle ownership, governed data isolation, delivery gates, testing, observability, and agent-verifiable production hygiene.
 
@@ -12,7 +14,9 @@ Source credit: this skill derives from and credits Databricks documentation, esp
 npx skills add nijanthan-dev/databricks-data-engineering-best-practices --global --agent codex claude-code --skill databricks-data-engineering-best-practices --copy -y
 ```
 
-This was tested locally. It installs:
+This installs the skill under its technical ID while presenting the display name “Databricks Developer Best Practices”.
+
+It installs:
 
 - Codex: `~/.agents/skills/databricks-data-engineering-best-practices`
 - Claude Code: `~/.claude/skills/databricks-data-engineering-best-practices`

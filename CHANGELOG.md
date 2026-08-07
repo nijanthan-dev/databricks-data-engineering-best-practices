@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.0 - 2026-08-08
+
+- Renamed the user-facing skill title to Databricks Developer Best Practices.
+- Rechecked the official Databricks source; it remains last updated 2026-07-10.
+- Kept the technical skill ID stable for clean Agent Skills installation.
+
 ## 1.1.0 - 2026-08-01
 
 - Refreshed source metadata and expanded workspace isolation, bundle lifecycle, developer tooling, and testing guidance from the Databricks page updated 2026-07-10.

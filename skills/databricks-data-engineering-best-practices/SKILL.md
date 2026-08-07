@@ -7,11 +7,11 @@ metadata:
   source_url: "https://docs.databricks.com/aws/en/developers/best-practices"
   source_name: "Databricks Developer best practices on Databricks"
   source_last_updated: "2026-07-10"
-  source_checked: "2026-08-01"
-  version: "1.1.0"
+  source_checked: "2026-08-08"
+  version: "1.2.0"
 ---
 
-# Databricks Data Engineering Best Practices
+# Databricks Developer Best Practices
 
 Use this when an agent is helping with a Databricks data engineering repository, deployment design, CI/CD review, or production-readiness audit.
 
